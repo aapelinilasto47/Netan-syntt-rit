@@ -13,28 +13,80 @@ export default function TampereEscapeGame() {
   const [stage, setStage] = useState(1);
   const [pinInput, setPinInput] = useState("");
   const [error, setError] = useState(false);
+  const [isPinModalOpen, setIsPinModalOpen] = useState(false);
 
   const handlePinSubmit = (targetCode, nextStage) => {
     if (pinInput.trim() === targetCode) {
       setStage(nextStage);
       setPinInput("");
       setError(false);
+      setIsPinModalOpen(false);
     } else {
       setError(true);
       setTimeout(() => setError(false), 2000);
     }
   };
 
+  const executeSubmit = () => {
+    if (stage === 1) handlePinSubmit(CODES.STAGE_1, 2);
+    if (stage === 2) handlePinSubmit(CODES.STAGE_2, 3);
+    if (stage === 3) handlePinSubmit(CODES.STAGE_3, 4);
+    if (stage === 4) handlePinSubmit(CODES.STAGE_4, 5);
+  };
+
   return (
     <div style={styles.container}>
       <header style={styles.header}>
         <h2 style={styles.headerTitle}>ESIKUNNAN PÄÄTE – HUHTIKUU 1918</h2>
-        <div style={styles.badge}>
-          {stage <= 4 ? `OSA: ${stage} / 4` : "TEHTÄVÄ SUORITETTU"}
-        </div>
       </header>
 
-      <main style={styles.content}>
+      {/* Simppeli ja tyylikäs tilapalkki */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          padding: "8px 20px",
+          backgroundColor: "#dfd2b5",
+          borderBottom: "1px solid #c9baa1",
+          fontFamily: "monospace",
+          fontSize: "0.85rem",
+          color: "#4a3b2c",
+        }}
+      >
+        <span style={{ fontWeight: "bold", letterSpacing: "1px" }}>
+          {stage <= 4 ? `VAIHE ${stage} / 4` : "VALMIS"}
+        </span>
+
+        {/* 4 pientä indikaattoria */}
+        <div style={{ display: "flex", gap: "6px" }}>
+          {[1, 2, 3, 4].map((s) => (
+            <div
+              key={s}
+              style={{
+                width: "10px",
+                height: "10px",
+                borderRadius: "50%",
+                backgroundColor:
+                  s === stage
+                    ? "#8c2d19" // nykyinen (punaruskea)
+                    : s < stage
+                      ? "#4a3b2c" // suoritettu (tumma)
+                      : "#c4b595", // tuleva (vaalea)
+                transition: "background-color 0.2s ease",
+              }}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Sisältöalue: varataan pohjalle 80px tilaa napille */}
+      <main
+        style={{
+          ...styles.content,
+          paddingBottom: stage <= 4 ? "85px" : "24px",
+        }}
+      >
         {stage === 1 && <Stage1 />}
         {stage === 2 && <Stage2 />}
         {stage === 3 && <Stage3 />}
@@ -42,39 +94,205 @@ export default function TampereEscapeGame() {
         {stage === 5 && <StageFinal vaultCode={CODES.PHYSICAL_VAULT} />}
       </main>
 
-      {/* Vaiheissa 1-4 näytetään PIN-syöttökenttä */}
       {stage <= 4 && (
-        <footer style={styles.footer}>
-          <div style={styles.pinContainer}>
+        <div
+          style={{
+            position: "fixed",
+            bottom: "0",
+            left: "50%",
+            transform: "translateX(-50%)",
+            width: "100%",
+            maxWidth: "720px",
+            backgroundColor: "rgba(243, 235, 215, 0.96)",
+            borderTop: "2px solid #5a4632",
+            borderLeft: "1px solid #5a4632",
+            borderRight: "1px solid #5a4632",
+            padding: "10px 16px",
+            display: "flex",
+            justifyContent: "center",
+            zIndex: 99,
+            boxShadow: "0 -2px 10px rgba(0,0,0,0.15)",
+            boxSizing: "border-box",
+          }}
+        >
+          <button
+            type="button"
+            onClick={() => {
+              setError(false);
+              setIsPinModalOpen(true);
+            }}
+            style={{
+              backgroundColor: "#8c2d19",
+              color: "#ffffff",
+              border: "2px solid #5a4632",
+              borderRadius: "4px",
+              padding: "12px 28px",
+              fontFamily: "monospace",
+              fontSize: "0.95rem",
+              fontWeight: "bold",
+              cursor: "pointer",
+              boxShadow: "0 4px 8px rgba(0,0,0,0.3)",
+              letterSpacing: "1px",
+              width: "100%",
+              maxWidth: "400px",
+            }}
+          >
+            SYÖTÄ PIN-VARMENNE
+          </button>
+        </div>
+      )}
+
+      {/* PIN-KOODIN MODAALI */}
+      {isPinModalOpen && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: "rgba(0, 0, 0, 0.8)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "16px",
+            zIndex: 1000,
+          }}
+          onClick={() => setIsPinModalOpen(false)}
+        >
+          <div
+            style={{
+              backgroundColor: "#f3ebd7",
+              border: "3px solid #5a4632",
+              borderRadius: "8px",
+              padding: "20px",
+              maxWidth: "360px",
+              width: "100%",
+              textAlign: "center",
+              boxShadow: "0 10px 25px rgba(0,0,0,0.5)",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div
+              style={{
+                fontSize: "0.75rem",
+                fontFamily: "monospace",
+                color: "#8c2d19",
+                fontWeight: "bold",
+                letterSpacing: "1px",
+                marginBottom: "6px",
+              }}
+            >
+              ESIKUNNAN PÄÄTE // VAIHEEN {stage} LUKITUS
+            </div>
+
+            <h3
+              style={{
+                margin: "0 0 8px 0",
+                fontFamily: "serif",
+                fontSize: "1.25rem",
+                color: "#2b231c",
+              }}
+            >
+              Syötä 4-numeroinen varmenne
+            </h3>
+
+            <p
+              style={{
+                fontSize: "0.85rem",
+                color: "#5a4632",
+                margin: "0 0 16px 0",
+                lineHeight: 1.3,
+              }}
+            >
+              Tarkista ratkaisu kyseisen vaiheen asiakirjoista ennen
+              syöttämistä.
+            </p>
+
             <input
               type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
               maxLength={4}
+              autoFocus
               value={pinInput}
-              onChange={(e) => setPinInput(e.target.value)}
-              placeholder="SYÖTÄ 4-NUMEROINEN VARMENNE"
+              onChange={(e) => {
+                setPinInput(e.target.value);
+                if (error) setError(false);
+              }}
+              onKeyDown={(e) => e.key === "Enter" && executeSubmit()}
+              placeholder="— — — —"
               style={{
-                ...styles.input,
-                borderColor: error ? "#b03a2e" : "#5a4632",
+                width: "80%",
+                margin: "0 auto 12px auto",
+                fontSize: "2rem",
+                textAlign: "center",
+                letterSpacing: "8px",
+                fontFamily: "monospace",
+                fontWeight: "bold",
+                padding: "8px",
+                border: `2px solid ${error ? "#b03a2e" : "#8c2d19"}`,
+                backgroundColor: error ? "#fbeee6" : "#ffffff",
+                borderRadius: "4px",
+                outline: "none",
+                color: "#1a140e",
+                display: "block",
               }}
             />
-            <button
-              onClick={() => {
-                if (stage === 1) handlePinSubmit(CODES.STAGE_1, 2);
-                if (stage === 2) handlePinSubmit(CODES.STAGE_2, 3);
-                if (stage === 3) handlePinSubmit(CODES.STAGE_3, 4);
-                if (stage === 4) handlePinSubmit(CODES.STAGE_4, 5); // Avaa loppuruudun!
-              }}
-              style={styles.button}
-            >
-              VAHVISTA
-            </button>
+
+            {error && (
+              <div
+                style={{
+                  marginBottom: "12px",
+                  color: "#b03a2e",
+                  fontFamily: "monospace",
+                  fontSize: "0.85rem",
+                  fontWeight: "bold",
+                }}
+              >
+                VIRHEELLINEN VARMENNE
+              </div>
+            )}
+
+            <div style={{ display: "flex", gap: "10px", marginTop: "16px" }}>
+              <button
+                type="button"
+                onClick={() => setIsPinModalOpen(false)}
+                style={{
+                  flex: 1,
+                  padding: "12px",
+                  backgroundColor: "#fffdf9",
+                  border: "1px solid #5a4632",
+                  color: "#5a4632",
+                  borderRadius: "4px",
+                  cursor: "pointer",
+                  fontFamily: "monospace",
+                  fontWeight: "bold",
+                }}
+              >
+                Sulje
+              </button>
+
+              <button
+                type="button"
+                onClick={executeSubmit}
+                style={{
+                  flex: 1,
+                  padding: "12px",
+                  backgroundColor: "#8c2d19",
+                  border: "none",
+                  color: "#ffffff",
+                  borderRadius: "4px",
+                  fontWeight: "bold",
+                  cursor: "pointer",
+                  fontFamily: "monospace",
+                }}
+              >
+                Vahvista
+              </button>
+            </div>
           </div>
-          {error && (
-            <p style={styles.errorText}>
-              VIRHEELLINEN VARMENNE – YHTEYS EVÄTTY
-            </p>
-          )}
-        </footer>
+        </div>
       )}
     </div>
   );
@@ -1141,6 +1359,7 @@ const styles = {
     fontFamily: '"Georgia", serif',
     display: "flex",
     flexDirection: "column",
+    boxShadow: "0 0 30px rgba(0, 0, 0, 0.5)", // Antaa syvyyttä työpöytäruudulla
     borderLeft: "1px solid #dcd1ba",
     borderRight: "1px solid #dcd1ba",
     boxSizing: "border-box",
@@ -1409,5 +1628,114 @@ const storyStyles = {
     fontStyle: "normal",
     color: "#5a4632",
     textAlign: "right",
+  },
+};
+const modalPinStyles = {
+  fabContainer: {
+    position: "fixed",
+    bottom: "20px",
+    left: "0",
+    right: "0",
+    display: "flex",
+    justifyContent: "center",
+    zIndex: 90,
+    pointerEvents: "none",
+  },
+  fabButton: {
+    pointerEvents: "auto",
+    backgroundColor: "#8c2d19",
+    color: "#ffffff",
+    border: "2px solid #5a4632",
+    borderRadius: "28px",
+    padding: "12px 24px",
+    fontFamily: "monospace",
+    fontSize: "0.95rem",
+    fontWeight: "bold",
+    boxShadow: "0 6px 18px rgba(0,0,0,0.45)",
+    cursor: "pointer",
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+    letterSpacing: "1px",
+  },
+  modalWindow: {
+    backgroundColor: "#f3ebd7",
+    border: "2px solid #5a4632",
+    borderRadius: "6px",
+    padding: "24px 20px",
+    maxWidth: "380px",
+    width: "90%",
+    boxShadow: "0 10px 30px rgba(0,0,0,0.7)",
+    textAlign: "center",
+    transform: "translateY(-15%)", // Pitää modaalin näppäimistön yläpuolella
+  },
+  headerTag: {
+    fontSize: "0.72rem",
+    fontFamily: "monospace",
+    color: "#8c2d19",
+    fontWeight: "bold",
+    letterSpacing: "1px",
+    marginBottom: "6px",
+  },
+  modalTitle: {
+    margin: "0 0 6px 0",
+    fontFamily: "serif",
+    fontSize: "1.25rem",
+    color: "#2b231c",
+  },
+  hintText: {
+    fontSize: "0.82rem",
+    color: "#5a4632",
+    margin: "0 0 16px 0",
+    lineHeight: 1.3,
+  },
+  largeInput: {
+    width: "75%",
+    margin: "0 auto",
+    fontSize: "2rem",
+    textAlign: "center",
+    letterSpacing: "8px",
+    fontFamily: "monospace",
+    fontWeight: "bold",
+    padding: "10px",
+    border: "2px solid #8c2d19",
+    borderRadius: "4px",
+    outline: "none",
+    color: "#1a140e",
+    display: "block",
+  },
+  errorBanner: {
+    marginTop: "12px",
+    color: "#b03a2e",
+    fontFamily: "monospace",
+    fontSize: "0.8rem",
+    fontWeight: "bold",
+  },
+  actionRow: {
+    marginTop: "20px",
+    display: "flex",
+    gap: "10px",
+    justifyContent: "center",
+  },
+  cancelBtn: {
+    padding: "10px 16px",
+    backgroundColor: "transparent",
+    border: "1px solid #5a4632",
+    color: "#5a4632",
+    borderRadius: "4px",
+    cursor: "pointer",
+    fontFamily: "monospace",
+    fontWeight: "bold",
+  },
+  confirmBtn: {
+    padding: "10px 20px",
+    backgroundColor: "#8c2d19",
+    border: "1px solid #5a4632",
+    color: "#ffffff",
+    fontWeight: "bold",
+    borderRadius: "4px",
+    cursor: "pointer",
+    fontFamily: "monospace",
+    letterSpacing: "0.5px",
   },
 };
