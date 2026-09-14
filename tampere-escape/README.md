@@ -22,10 +22,13 @@ Peli etenee 4 vaiheessa:
 
 Pelin pelaamiseen tarvitaan:
 
-- **Tulosteet:** Tulosta kansiosta [`printables/`](./printables) löytyvät Dokumentit 1–3 pöydälle.
-- **Lipas & Lukko:** Metallilipas tai laatikko, joka on lukittu 4-numeroisella riippulukolla (asetuskoodi: `2703`).
-- **Salainen dokumentti:** Tulosta `Dokumentti 4` ja sulje se lukitun lippaan sisälle.
-- **Laitteet:** 1–2 älypuhelinta tai tietokonetta verkkosovelluksen käyttöön (vaiheessa 4 suositellaan kahta laitetta).
+- **Asiakirjat:** Tulosta tiedosto [`printables/Tampere_1918_Pakohuone_Dokumentit.pdf`](./printables/Tampere_1918_Pakohuone_Dokumentit.pdf) seuraavasti:
+  - **Arkki 1 (Dokumentti 1):** Tulosta sivut 1–2 **kaksipuolisena** pelipöydälle.
+  - **Arkki 2 (Dokumentti 2):** Tulosta sivut 3–4 **kaksipuolisena** pelipöydälle.
+  - **Arkki 3 (Dokumentti 3):** Tulosta sivut 5–6 **kaksipuolisena** pelipöydälle.
+  - **Arkki 4 (Dokumentti 4):** Tulosta sivu 7 **yksipuolisena ja sulje se etukäteen lukitun lippaan sisälle!**
+- **Lipas & Lukko:** Metallilipas tai laatikko, joka on lukittu 4-numeroisella riippulukolla.
+- **Laitteet:** 1–2 älypuhelinta tai tietokonetta verkkosovelluksen käyttöön (vaiheessa 4 suositellaan kahta eri laitetta pelaajille).
 
 ---
 
@@ -48,3 +51,15 @@ npm run dev
 # Rakenna tuotantoversio
 npm run build
 ```
+
+## ⚠️ Spoilerit (Ratkaisukoodit järjestäjälle)
+
+- **Vaihe 1 (Kanslia):** 3719
+
+- **Vaihe 2 (Morse):** 4239
+
+- **Vaihe 3 (Puolustuslinjat):** 6248
+
+- **Vaihe 4 (Kaksoisvaltuutus):** 7431
+
+- **Mekaaninen riippulukko (Lipas):** 2703
