@@ -22,7 +22,7 @@ Peli etenee 4 vaiheessa:
 
 Pelin pelaamiseen tarvitaan:
 
-- **Asiakirjat:** Tulosta tiedosto [`printables/Tampere_1918_Pakohuone_Dokumentit.pdf`](./printables/Tampere_1918_Pakohuone_Dokumentit.pdf) seuraavasti:
+- **Asiakirjat:** Tulosta tiedosto [`printables/Tampere_1918_Pakohuone_Dokumentit.pdf`](./printables/Punakaartin kenttälippaan mysteeri, dokumentit.pdf) seuraavasti:
   - **Arkki 1 (Dokumentti 1):** Tulosta sivut 1–2 **kaksipuolisena** pelipöydälle.
   - **Arkki 2 (Dokumentti 2):** Tulosta sivut 3–4 **kaksipuolisena** pelipöydälle.
   - **Arkki 3 (Dokumentti 3):** Tulosta sivut 5–6 **kaksipuolisena** pelipöydälle.
