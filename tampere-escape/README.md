@@ -1,16 +1,50 @@
-# React + Vite
+# Tampere 1918 – Esikunnan Pääte (Pakohuonepeli)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Historiallinen hybridi-pakohuonepeli, joka sijoittuu huhtikuun 1918 Tampereen taistelun dramaattisimpiin hetkiin. Peli yhdistää React-pohjaisen digitaalisen kenttäpäätteen fyysisiin tulostettaviin asiakirjoihin ja oikeaan numerolukolliseen lippaaseen.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🧭 Pelin idea & Rakenne
 
-## React Compiler
+Pelaajat toimivat historian tutkijoina, jotka ovat löytäneet Raatihuoneen kellarista suljetun kenttäkassan ja vanhan esikunnan kenttäpäätteen. Tehtävänä on purkaa 72 tunnin suojausketju seuraamalla kansliakirjuri **Aino Koskisen** ja kenttäkuriiri **Eino Niemisen** jättämiä viestejä.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Peli etenee 4 vaiheessa:
 
-## Expanding the ESLint configuration
+1. **Osa 1: Raatihuoneen kanslia** – Henkilökortiston tutkiminen ja avainhenkilöiden leimojen tunnistus (Dokumentti 1).
+2. **Osa 2: Rautatieaseman lennätin** – Reaaliaikaisen morsekoodin kuuntelu ja sähkösäännön purku (Dokumentti 2).
+3. **Osa 3: Finlaysonin varapääte** – Neljän puolustuslinjan tilan varmentaminen kartalta ja arkistoista (Dokumentti 3).
+4. **Osa 4: Kaksoisvaltuutus yli rintamalinjan** – Asymmetrinen kahden pelaajan viestintätehtävä eri rooleissa (Aino & Eino).
+5. **Huipennus** – Pääte antaa mekaanisen lukkokoodin pöydällä olevaan metallilippaaseen, jonka sisältä löytyy salainen kirje (Dokumentti 4).
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🖨️ Pelin järjestäjälle (Rekvisiitta & Valmistelut)
+
+Pelin pelaamiseen tarvitaan:
+
+- **Tulosteet:** Tulosta kansiosta [`printables/`](./printables) löytyvät Dokumentit 1–3 pöydälle.
+- **Lipas & Lukko:** Metallilipas tai laatikko, joka on lukittu 4-numeroisella riippulukolla (asetuskoodi: `2703`).
+- **Salainen dokumentti:** Tulosta `Dokumentti 4` ja sulje se lukitun lippaan sisälle.
+- **Laitteet:** 1–2 älypuhelinta tai tietokonetta verkkosovelluksen käyttöön (vaiheessa 4 suositellaan kahta laitetta).
+
+---
+
+## 🛠️ Tekninen toteutus
+
+- **Framework:** React + Vite
+- **Audio:** Web Audio API (reaaliaikainen syntetisoitu morsekoodi)
+- **Käyttöliittymä:** Responsiivinen mobiilioptimoitu näkymä, aikakaudelle uskollinen typografia ja väriteema
+- **Julkaisu:** Vercel
+
+### Asennus ja kehitys lokaalisti
+
+```bash
+# Asenna riippuvuudet
+npm install
+
+# Käynnistä kehityspalvelin
+npm run dev
+
+# Rakenna tuotantoversio
+npm run build
+```
