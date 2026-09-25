@@ -10,7 +10,7 @@ const CODES = {
 };
 
 export default function TampereEscapeGame() {
-  const [stage, setStage] = useState(1);
+  const [stage, setStage] = useState(0);
   const [pinInput, setPinInput] = useState("");
   const [error, setError] = useState(false);
   const [isPinModalOpen, setIsPinModalOpen] = useState(false);
@@ -55,7 +55,11 @@ export default function TampereEscapeGame() {
         }}
       >
         <span style={{ fontWeight: "bold", letterSpacing: "1px" }}>
-          {stage <= 4 ? `VAIHE ${stage} / 4` : "VALMIS"}
+          {stage === 0
+            ? "OPERAATION ALOITUS"
+            : stage <= 4
+              ? `VAIHE ${stage} / 4`
+              : "VALMIS"}
         </span>
 
         {/* 4 pientä indikaattoria */}
@@ -84,9 +88,10 @@ export default function TampereEscapeGame() {
       <main
         style={{
           ...styles.content,
-          paddingBottom: stage <= 4 ? "85px" : "24px",
+          paddingBottom: stage >= 1 && stage <= 4 ? "85px" : "24px",
         }}
       >
+        {stage === 0 && <StageIntro onStart={() => setStage(1)} />}
         {stage === 1 && <Stage1 />}
         {stage === 2 && <Stage2 />}
         {stage === 3 && <Stage3 />}
@@ -94,7 +99,7 @@ export default function TampereEscapeGame() {
         {stage === 5 && <StageFinal vaultCode={CODES.PHYSICAL_VAULT} />}
       </main>
 
-      {stage <= 4 && (
+      {stage >= 1 && stage <= 4 && (
         <div
           style={{
             position: "fixed",
@@ -294,6 +299,91 @@ export default function TampereEscapeGame() {
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+function StageIntro({ onStart }) {
+  return (
+    <div style={{ textAlign: "center", padding: "8px 0" }}>
+      <div style={storyStyles.reportBox}>
+        <div style={storyStyles.reportHeader}>
+          PÄÄMAJAN TIEDOTE // HUHTIKUU 1918
+        </div>
+        <div style={storyStyles.reportQuote}>
+          ”Tampereen taistelut ovat kiihtyneet katujen ja kortteleiden
+          valtauksiksi. Esikunnan salainen kassalipas on lukittu suojahuoneen
+          päätteellä. Päästäksenne käsiksi sen viimeiseen asiakirjaan teidän on
+          purettava neliosainen varmennusketju ennen linjojen katkeamista.”
+          <div style={storyStyles.speaker}>— Esikunnan kanslia</div>
+        </div>
+      </div>
+
+      <h3 style={styles.stageTitle}>Toimintaohjeet</h3>
+
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "12px",
+          textAlign: "left",
+          marginBottom: "28px",
+        }}
+      >
+        <div style={styles.card}>
+          <strong style={{ color: "#8c2d19", fontFamily: "monospace" }}>
+            1. PÖYDÄN MATERIAALIT
+          </strong>
+          <p
+            style={{ margin: "4px 0 0 0", fontSize: "0.9rem", lineHeight: 1.4 }}
+          >
+            Pöydällä on numeroituja kirjekuoria ja lukittu kassalipas. Avatkaa
+            aina vain kyseisen vaiheen kirjekuori, kun pääte ohjaa siihen.
+          </p>
+        </div>
+
+        <div style={styles.card}>
+          <strong style={{ color: "#8c2d19", fontFamily: "monospace" }}>
+            2. NÄYTTÖ JA ÄÄNET
+          </strong>
+          <p
+            style={{ margin: "4px 0 0 0", fontSize: "0.9rem", lineHeight: 1.4 }}
+          >
+            Tämä ruutu antaa vihjeet ja ottaa vastaan ratkaisut. Pitääkää
+            laitteen äänet päällä, sillä pääte voi toistaa myös äänisignaaleja.
+          </p>
+        </div>
+
+        <div style={styles.card}>
+          <strong style={{ color: "#8c2d19", fontFamily: "monospace" }}>
+            3. KOODIT JA ETENEMINEN
+          </strong>
+          <p
+            style={{ margin: "4px 0 0 0", fontSize: "0.9rem", lineHeight: 1.4 }}
+          >
+            Jokainen vaihe ratkeaa 4-numeroiseen PIN-varmenteeseen, jonka
+            syötätte alareunan painikkeesta. Peli ei ole aikasidonnainen –
+            tutkikaa materiaaleja rauhassa yhdessä.
+          </p>
+        </div>
+      </div>
+
+      <button
+        type="button"
+        onClick={onStart}
+        style={{
+          ...styles.button,
+          backgroundColor: "#8c2d19",
+          padding: "16px 32px",
+          fontSize: "1.05rem",
+          letterSpacing: "1px",
+          width: "100%",
+          maxWidth: "380px",
+          boxShadow: "0 4px 10px rgba(0,0,0,0.25)",
+        }}
+      >
+        ALOITA OPERAATIO ▶
+      </button>
     </div>
   );
 }
@@ -1330,7 +1420,9 @@ function StageFinal({ vaultCode }) {
           margin: "0 0 16px 0",
         }}
       >
-        Kääntäkää koodi pöydällä olevaan metallilukkoon ja avatkaa lipas!
+        Kääntäkää koodi pöydällä olevaan metallilukkoon ja avatkaa lipas! Tai
+        vaihtoehtoisesti ilmoittakaa koodi pelin järjestäjälle, niin hän
+        luovuttaa lippaan avaimen.
       </p>
 
       <img
